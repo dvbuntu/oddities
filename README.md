@@ -16,4 +16,8 @@ Languages
 
 Other Stuff
 ===========
-SFML
+SFML?
+
+Code so far
+===========
+car.py - A simple class for a vehicle object.  Currently just worries about stopping distance and time.  Includes plot.
