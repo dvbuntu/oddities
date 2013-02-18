@@ -34,7 +34,7 @@ class car:
             velocity = 0
         return velocity
     def get_position(self, time = 0):
-        '''Compute position of the vehicle at given time.  This would be a good function to memoize'''
+        '''Compute position of the vehicle at given time.  This would be a good function to memoize.  I know boiserm does this.'''
         if time < self.tr:
             pos = self.v0 * time
         elif time <= self.t_stop:
