@@ -8,7 +8,6 @@ int main(int argc, char* argv[])
 {
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Example");
 
-	// you'll probably need to change this to a font you actually have
 	sf::Font font;
 	if (!font.loadFromFile("DejaVuSans.ttf"))
 		return 1;
@@ -36,7 +35,7 @@ int main(int argc, char* argv[])
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			// pressing the OS's close button or pressing escape
+			// clicking the OS's close button or pressing escape
 			if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
 				window.close();
 			// left clicking
