@@ -25,7 +25,7 @@ SFML?
 Code so far
 -----------
 
-car.py - A simple class for a vehicle object.  Currently just worries about stopping distance and time.  Includes plot.
-SFML_examples - a basic SFML app in different languages
++ car.py - A simple class for a vehicle object.  Currently just worries about stopping distance and time.  Includes plot.
++ SFML_examples - a basic SFML app in different languages
 	main.cpp
 	main.py
