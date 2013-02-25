@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <iostream>
 #include <sstream>
 #include <SFML/Graphics.hpp>
@@ -5,12 +6,15 @@
 #include "car.hpp"
 
 using std::cerr;
+using std::cout;
+using std::endl;
+using std::rand;
 
 int main()
 {
 	// load resources
 	sf::Font font;
-	if (!font.loadFromFile("DejaVuSans.ttf"))
+	if (!font.loadFromFile("../resources/DejaVuSans.ttf"))
 	{
 		cerr << "Couldn't find font DejaVuSans.ttf!\n";
 		return 1;
@@ -21,7 +25,11 @@ int main()
 	sf::View view = window.getDefaultView();
 	sf::Color background(22, 22, 22);
 
+	Car car(view.getCenter());
+
 	sf::Clock clock;
+	sf::Clock ai; // lol
+	int think = rand() % 10 + 2;
 
 	// game loop
 	while (window.isOpen())
@@ -53,8 +61,29 @@ int main()
 		float time = clock.getElapsedTime().asSeconds();
 		clock.restart();
 
+		if (ai.getElapsedTime().asSeconds() > think)
+		{
+			ai.restart();
+			think = rand() % 10 + 2;
+			float x = rand() / (float)RAND_MAX;
+			if (rand() % 2)
+			{
+				car.set_gas(x);
+				cout << "gas: " << x << endl;
+			}
+			else
+			{
+				car.set_brake(x);
+				cout << "brake: " << x << endl;
+			}
+		}
+
+		car.step(time);
+
 		// draw
 		window.clear(background);
+
+		car.draw_on(window);
 
 		window.display();
 	}
