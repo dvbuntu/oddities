@@ -1,6 +1,6 @@
 #include "car.hpp"
 
-// units in meters, seconds
+// units in meters, seconds, kg
 
 // hardcoded for now. It's a Honda Civic
 Car::Car(const sf::Vector2f& p)
@@ -11,7 +11,8 @@ Car::Car(const sf::Vector2f& p)
 	brk_acc = 0;
 	brk_max = -37.17112; // 60-0 in 127 feet
 	max_vel = 53.6448; // 120mph
-	max_acc = 3.7778; // 0-60 in 7.1 seconds
+	max_acc = 3.7778; // 0-60 in 7.1 seconds (could be higher, due to gas pedal behavior and drag)
+	drag_m = (0.5 * 2.51516 * 0.45 * 1.225) / 1242.84; // (1/2 * area of front of car * drag coefficient * density of air) / mass
 
 	rect.setPosition(p);
 	rect.setFillColor(sf::Color(50, 170, 90));
@@ -31,7 +32,7 @@ void Car::set_brake(float b)
 
 void Car::step(float time)
 {
-	float acc = 0;
+	acc = 0;
 
 	// if not going as fast as you want to, set acceleration proportional to the difference
 	if (vel < trg_vel)
@@ -40,9 +41,10 @@ void Car::step(float time)
 	if (brk_acc < 0)
 		acc = brk_acc;
 
-	// TODO air resistance for coasting
+	// deceleration from drag
+	drag = drag_m * vel * vel;
 
-	vel += acc * time;
+	vel += (acc - drag) * time;
 
 	// clamp velocity
 	if (vel < 0)

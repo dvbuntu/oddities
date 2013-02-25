@@ -7,11 +7,15 @@ class Car
 {
 	// 1-dimensional for now
 	float vel;
+	float acc;
 	float trg_vel; // speed we want to go
 	float brk_acc; // deceleration due to braking
 	float brk_max; // max deceleration due to braking
 	float max_vel; // max speed
 	float max_acc; // max acceleration
+	float drag_m; // drag multiplier
+
+	float drag;
 	sf::RectangleShape rect;
 public:
 	Car(const sf::Vector2f& p);
@@ -29,6 +33,16 @@ public:
 	inline float get_vel() const
 	{
 		return vel;
+	}
+
+	inline float get_acc() const
+	{
+		return acc;
+	}
+
+	inline float get_drag() const
+	{
+		return drag;
 	}
 
 	void set_pos(float p)
