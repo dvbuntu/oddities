@@ -1,3 +1,9 @@
+/* Very simple car class. Only handles acceleration and deceleration. It's very
+ * hacky and rough - for example the position and size are stored in the visual
+ * representation (the sf::RectangleShape) which probably isn't the best idea
+ * down the road
+ */
+
 #ifndef CAR_HPP
 #define CAR_HPP
 

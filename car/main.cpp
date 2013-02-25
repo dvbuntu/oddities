@@ -1,3 +1,13 @@
+/* This is a really rough simulation of a car. It's 1 dimensional, there are no
+ * collisions, and the car's behavior in terms of gas and brakes are 100% made
+ * up on the spot - though they're kind of decent at mimicking real car
+ * behavior.
+ *
+ * In the 1-D case it should be easy enough to implement basic car behavior.
+ * Cars could be stored sorted in a list, making it easy for a car to respond
+ * to the one ahead of it
+ */
+
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
