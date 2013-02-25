@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Example");
 
 	sf::Font font;
-	if (!font.loadFromFile("DejaVuSans.ttf"))
+	if (!font.loadFromFile("../resources/DejaVuSans.ttf"))
 		return 1;
 
 	// create text to display

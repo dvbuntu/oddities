@@ -5,7 +5,7 @@ require 'sfml/all'
 window = SFML::RenderWindow.new(SFML::VideoMode.new(800, 600), "SFML Example")
 
 font = SFML::Font.new
-font.load_from_file("DejaVuSans.ttf")
+font.load_from_file("../resources/DejaVuSans.ttf")
 
 # create text to display
 text = SFML::Text.new("SFML!!!", font, 32)

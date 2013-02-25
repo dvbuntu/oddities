@@ -3,7 +3,7 @@ import sfml
 
 window = sfml.RenderWindow(sfml.VideoMode(800, 600), "SFML Example")
 
-font = sfml.Font.load_from_file("DejaVuSans.ttf")
+font = sfml.Font.load_from_file("../resources/DejaVuSans.ttf")
 
 # create text to display
 text = sfml.Text("SFML!!!", font, 32)
