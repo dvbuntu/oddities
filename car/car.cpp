@@ -44,5 +44,12 @@ void Car::step(float time)
 
 	vel += acc * time;
 
+	// clamp velocity
+	if (vel < 0)
+		vel = 0;
+
+	if (vel > max_vel)
+		vel = max_vel;
+
 	rect.move(vel * time, 0);
 }

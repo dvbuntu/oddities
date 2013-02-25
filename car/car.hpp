@@ -21,6 +21,21 @@ public:
 		return rect.getPosition().x;
 	}
 
+	inline float get_size() const
+	{
+		return rect.getSize().x;
+	}
+
+	inline float get_vel() const
+	{
+		return vel;
+	}
+
+	void set_pos(float p)
+	{
+		rect.setPosition(p, rect.getPosition().y);
+	}
+
 	// set gas pedal amount between 0 and 1
 	void set_gas(float g);
 	// set brake pedal amount between 0 and 1
