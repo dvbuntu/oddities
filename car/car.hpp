@@ -18,10 +18,12 @@ public:
 
 	inline float get_pos() const
 	{
-		return pos;
+		return rect.getPosition().x;
 	}
 
+	// set gas pedal amount between 0 and 1
 	void set_gas(float g);
+	// set brake pedal amount between 0 and 1
 	void set_brake(float b);
 
 	// advance simulation
