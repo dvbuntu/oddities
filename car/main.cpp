@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <ctime>
 #include <iostream>
 #include <sstream>
 #include <SFML/Graphics.hpp>
@@ -12,6 +13,8 @@ using std::rand;
 
 int main()
 {
+	std::srand(std::time(nullptr));
+
 	// load resources
 	sf::Font font;
 	if (!font.loadFromFile("../resources/DejaVuSans.ttf"))
@@ -23,13 +26,19 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Traffic Simulator");
 	window.setVerticalSyncEnabled(true);
 	sf::View view = window.getDefaultView();
+	view.zoom(0.1);
+	window.setView(view);
+
+	float width = view.getSize().x;
+	float right = width / 2 + view.getCenter().x;
+
 	sf::Color background(22, 22, 22);
 
 	Car car(view.getCenter());
 
 	sf::Clock clock;
 	sf::Clock ai; // lol
-	int think = rand() % 10 + 2;
+	int think = 0;
 
 	// game loop
 	while (window.isOpen())
@@ -61,7 +70,11 @@ int main()
 		float time = clock.getElapsedTime().asSeconds();
 		clock.restart();
 
-		if (ai.getElapsedTime().asSeconds() > think)
+		// wrap car around screen
+		if (car.get_pos() > right)
+			car.set_pos(car.get_pos() - width - car.get_size());
+
+		if (car.get_vel() == 0 || ai.getElapsedTime().asSeconds() > think)
 		{
 			ai.restart();
 			think = rand() % 10 + 2;
