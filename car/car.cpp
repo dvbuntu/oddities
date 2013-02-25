@@ -11,7 +11,7 @@ Car::Car(const sf::Vector2f& p)
 	brk_acc = 0;
 	brk_max = -37.17112; // 60-0 in 127 feet
 	max_vel = 53.6448; // 120mph
-	max_acc = 3.7778; // 0-60 in 7.1 seconds (could be higher, due to gas pedal behavior and drag)
+	max_acc = 5.509; // 0-60 in 7.1 seconds (accounting for drag and such)
 	drag_m = (0.5 * 2.51516 * 0.45 * 1.225) / 1242.84; // (1/2 * area of front of car * drag coefficient * density of air) / mass
 
 	rect.setPosition(p);
@@ -42,6 +42,7 @@ void Car::step(float time)
 		acc = brk_acc;
 
 	// deceleration from drag
+	// TODO there's no wheel friction or anything so cars still coast for too long
 	drag = drag_m * vel * vel;
 
 	vel += (acc - drag) * time;
