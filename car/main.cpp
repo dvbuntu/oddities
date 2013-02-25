@@ -32,13 +32,16 @@ int main()
 	float width = view.getSize().x;
 	float right = width / 2 + view.getCenter().x;
 
+	sf::Text stats("", font, 12);
+	stats.setColor(sf::Color::White);
+
+	std::stringstream stat_s;
+
 	sf::Color background(22, 22, 22);
 
 	Car car(view.getCenter());
 
 	sf::Clock clock;
-	sf::Clock ai; // lol
-	int think = 0;
 
 	// game loop
 	while (window.isOpen())
@@ -53,12 +56,16 @@ int main()
 				switch(event.key.code)
 				{
 					case sf::Keyboard::Left:
+						car.set_gas(0);
 						break;
 					case sf::Keyboard::Right:
+						car.set_gas(1);
 						break;
 					case sf::Keyboard::Up:
+						car.set_brake(0);
 						break;
 					case sf::Keyboard::Down:
+						car.set_brake(1);
 						break;
 					default:
 						break;
@@ -74,29 +81,35 @@ int main()
 		if (car.get_pos() > right)
 			car.set_pos(car.get_pos() - width - car.get_size());
 
-		if (car.get_vel() == 0 || ai.getElapsedTime().asSeconds() > think)
-		{
-			ai.restart();
-			think = rand() % 10 + 2;
-			float x = rand() / (float)RAND_MAX;
-			if (rand() % 2)
-			{
-				car.set_gas(x);
-				cout << "gas: " << x << endl;
-			}
-			else
-			{
-				car.set_brake(x);
-				cout << "brake: " << x << endl;
-			}
-		}
-
 		car.step(time);
 
 		// draw
 		window.clear(background);
 
 		car.draw_on(window);
+
+		// draw car stats
+		window.setView(window.getDefaultView());
+
+		stat_s.str("");
+		stat_s << car.get_vel() << " m/s";
+		stats.setString(stat_s.str());
+		stats.setPosition(10, 10);
+		window.draw(stats);
+
+		stat_s.str("");
+		stat_s << car.get_acc() << " m/s^2";
+		stats.setString(stat_s.str());
+		stats.setPosition(10, 22);
+		window.draw(stats);
+
+		stat_s.str("");
+		stat_s << car.get_drag() << " m/s^2";
+		stats.setString(stat_s.str());
+		stats.setPosition(10, 34);
+		window.draw(stats);
+
+		window.setView(view);
 
 		window.display();
 	}
