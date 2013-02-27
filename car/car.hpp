@@ -20,6 +20,9 @@ class Car
 	float max_vel; // max speed
 	float max_acc; // max acceleration
 	float drag_m; // drag multiplier
+	float mass; // mass of vehicle in kg
+	float weight; // weight of vehicle in mg * m / s^2
+	float roll_r; // deceleration due to rolling resistance, constant for a given vehicle/tire types/mass
 
 	float drag;
 	sf::RectangleShape rect;

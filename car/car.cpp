@@ -12,7 +12,10 @@ Car::Car(const sf::Vector2f& p)
 	brk_max = -37.17112; // 60-0 in 127 feet
 	max_vel = 53.6448; // 120mph
 	max_acc = 5.509; // 0-60 in 7.1 seconds (accounting for drag and such)
-	drag_m = (0.5 * 2.51516 * 0.45 * 1.225) / 1242.84; // (1/2 * area of front of car * drag coefficient * density of air) / mass
+    mass = 1242.84; // 2740 lb
+    weight = mass * 9.81; // kg*m/s^2
+    roll_r = 0.015 * 9.81; // maybe not big enough?
+	drag_m = (0.5 * 2.51516 * 0.45 * 1.225) / mass; // (1/2 * area of front of car * drag coefficient * density of air) / mass
 
 	rect.setPosition(p);
 	rect.setFillColor(sf::Color(50, 170, 90));
@@ -42,10 +45,9 @@ void Car::step(float time)
 		acc = brk_acc;
 
 	// deceleration from drag
-	// TODO there's no wheel friction or anything so cars still coast for too long
 	drag = drag_m * vel * vel;
 
-	vel += (acc - drag) * time;
+	vel += (acc - drag - roll_r) * time;
 
 	// clamp velocity
 	if (vel < 0)
