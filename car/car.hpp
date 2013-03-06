@@ -7,6 +7,7 @@
 #ifndef CAR_HPP
 #define CAR_HPP
 
+#include <cstdlib>
 #include <SFML/Graphics.hpp>
 
 class Car
@@ -37,6 +38,11 @@ public:
 	inline float get_size() const
 	{
 		return rect.getSize().x;
+	}
+
+	inline sf::FloatRect get_rect() const
+	{
+		return rect.getGlobalBounds();
 	}
 
 	inline float get_vel() const

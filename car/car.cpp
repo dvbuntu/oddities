@@ -18,7 +18,7 @@ Car::Car(const sf::Vector2f& p)
 	drag_m = (0.5 * 2.51516 * 0.45 * 1.225) / mass; // (1/2 * area of front of car * drag coefficient * density of air) / mass
 
 	rect.setPosition(p);
-	rect.setFillColor(sf::Color(50, 170, 90));
+	rect.setFillColor(sf::Color(std::rand() % 256, std::rand() % 256, std::rand() % 256));
 }
 
 void Car::set_gas(float g)
