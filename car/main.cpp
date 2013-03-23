@@ -107,13 +107,19 @@ int main()
 		}
 
 		// update car positions, front car is manual
+        // pcar is the trailing vehicle
+        // pnext is the leader
         auto pcar = cars.rbegin();
 		auto pnext = cars.rbegin();
 		++pnext;
+        /* TODO do the list zipping properly, front car
+         * being manual, doesn't care what it sees a leader
+         */
 		for (; pnext != cars.rend(); pcar++, pnext++)
 		{
 			Car& car = **pcar;
 			Car& next = **pnext;
+            // Reset the control algorithm, typ. for wrapped cars
             if (&car == cars.front())
             {
                 car.set_control(MANUAL);
@@ -129,7 +135,8 @@ int main()
 
         //front car is special
         cars.front()->set_control(MANUAL);
-        cars.front()->set_gas(cars.front()->get_auto_vel(*(cars.front())));
+        cars.front()->set_gas(cars.front()->
+                get_auto_vel(*(cars.front())));
         cars.front()->step(time);
 
 		// detect collisions

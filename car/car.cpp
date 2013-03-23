@@ -17,7 +17,7 @@ Car::Car(const sf::Vector2f& p)
     roll_r = 0.015 * 9.81; // maybe not big enough?
 	drag_m = (0.5 * 2.51516 * 0.45 * 1.225) / mass; // (1/2 * area of front of car * drag coefficient * density of air) / mass
 
-    control = MANUAL;
+    control = MANUAL; // Which self-driving algorithm
 
 	rect.setPosition(p);
 	rect.setFillColor(sf::Color(std::rand() % 256, std::rand() % 256, std::rand() % 256));
@@ -40,6 +40,8 @@ void Car::set_control(unsigned char c)
 	control = c;
 }
 
+// Get what the target gas setting of the car should be
+// given the car it is following.
 float Car::get_auto_vel(Car leader)
 {
     float new_vel;
@@ -88,7 +90,8 @@ void Car::step(float time)
 	if (brk_acc < 0 )
 		acc = brk_acc;
 
-    // we desperately need to stop!
+    // we desperately need to stop, so override braking
+    // TODO there's probably a better way, but alg was naive
     if (trg_vel < FLT_EPSILON)
         acc = brk_max;
 
