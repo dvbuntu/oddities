@@ -10,12 +10,17 @@ Ideas
  + Call it "Trimeme" and make it about internetz
  + Could even test out self-driving car things in such a framework (self driving triremes? :p
 - self-driving car algorithms/ traffic simulator
+ + Have a basic simulator working, you drive, comp follows
+ + very naive algorithm implemented
+ + Need to derive optimal algorithm and implement
+ + TODO change how cars target movement, setting velocity seems...odd
 
 Languages
 ---------
 - python
 - ruby
 - c
+- c++
 
 Other Stuff
 -----------
@@ -25,6 +30,7 @@ SFML?
 Code so far
 -----------
 
++ car/sim - basic traffic simulator with simple self-driving car who follows you
 + car.py - A simple class for a vehicle object.  Currently just worries about stopping distance and time.  Includes plot.
 + SFML_examples - a basic SFML app in different languages
 	main.cpp
