@@ -8,7 +8,22 @@
 #define CAR_HPP
 
 #include <cstdlib>
+#include <cfloat>
 #include <SFML/Graphics.hpp>
+
+// define manual and automatic control constants
+#ifndef MANUAL
+#define MANUAL 0
+#endif
+
+#ifndef AUTOMATIC1
+#define AUTOMATIC1 1
+#endif
+
+#ifndef NUM_CONTROL_TYPES
+#define NUM_CONTROL_TYPES 2 // hard-coded, easy way to automate?
+#endif
+
 
 class Car
 {
@@ -24,8 +39,10 @@ class Car
 	float mass; // mass of vehicle in kg
 	float weight; // weight of vehicle in mg * m / s^2
 	float roll_r; // deceleration due to rolling resistance, constant for a given vehicle/tire types/mass
-
 	float drag;
+
+    unsigned char control; // manual, or type of self-driving
+
 	sf::RectangleShape rect;
 public:
 	Car(const sf::Vector2f& p);
@@ -69,6 +86,11 @@ public:
 	void set_gas(float g);
 	// set brake pedal amount between 0 and 1
 	void set_brake(float b);
+	// set control manual or automatic
+	void set_control(unsigned char c);
+
+    // get the automated velocity based on leading car
+    float get_auto_vel(Car leader);
 
 	// advance simulation
 	void step(float time);
