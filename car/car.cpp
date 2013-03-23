@@ -25,7 +25,7 @@ Car::Car(const sf::Vector2f& p)
 
 void Car::set_gas(float g)
 {
-	brk_acc = 0;
+//	brk_acc = 0;
 	trg_vel = g * max_vel;
 }
 
@@ -55,18 +55,19 @@ float Car::get_auto_vel(Car leader)
             new_vel = trg_vel;
             break;
         case AUTOMATIC1:
-            new_vel = leader.trg_vel;
+            new_vel = leader.get_vel();
             break;
         default:
-            new_vel = trg_vel; //Just keep doing what we're doing
+            new_vel = leader.get_vel(); //Try not to crash
     }
 
-    return new_vel;
+    return new_vel / (float)max_vel;
 }
 
 void Car::step(float time)
 {
 	acc = 0;
+
 
 	// if not going the speed you want to, set acceleration proportional to the difference
     // TODO Change to accept an acc and compute those before step
@@ -83,9 +84,13 @@ void Car::step(float time)
                FLT_EPSILON)) * brk_acc;
     }
 
-    // if set to fixed braking or targeting low vel, ignore the trg_vel
-	if (brk_acc < 0 || trg_vel < FLT_EPSILON)
+    // if set to fixed braking, ignore the trg_vel
+	if (brk_acc < 0 )
 		acc = brk_acc;
+
+    // we desperately need to stop!
+    if (trg_vel < FLT_EPSILON)
+        acc = brk_max;
 
 	// deceleration from drag
 	drag = drag_m * vel * vel;

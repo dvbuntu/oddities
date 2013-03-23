@@ -67,6 +67,11 @@ public:
 		return vel;
 	}
 
+	inline float get_trg_vel() const
+	{
+		return trg_vel;
+	}
+
 	inline float get_acc() const
 	{
 		return acc;
@@ -76,6 +81,11 @@ public:
 	{
 		return drag;
 	}
+
+    inline unsigned char get_control() const
+    {
+        return control;
+    }
 
 	void set_pos(float p)
 	{

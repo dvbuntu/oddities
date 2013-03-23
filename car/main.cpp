@@ -55,6 +55,7 @@ int main()
 	cars.push_front(new Car(view.getCenter()));
 
 	cars.back()->set_gas(1);
+	cars.back()->set_control(AUTOMATIC1);
 
 	float timescale = 1;
 	sf::Clock clock;
@@ -71,6 +72,18 @@ int main()
 			{
 				switch(event.key.code)
 				{
+                    case sf::Keyboard::Left:
+                        cars.front()->set_gas(0);
+                        break;
+                    case sf::Keyboard::Right:
+                        cars.front()->set_gas(1);
+                        break;
+                    case sf::Keyboard::Up:
+                        cars.front()->set_brake(0);
+                        break;
+                    case sf::Keyboard::Down:
+                        cars.front()->set_brake(1);
+                        break;
 					case sf::Keyboard::Space:
 						timescale = 1 - timescale;
 						break;
@@ -80,6 +93,7 @@ int main()
 			}
 		}
 
+        
 		// frame-time-dependent stuff
 		float time = clock.getElapsedTime().asSeconds() * timescale;
 		clock.restart();
@@ -92,13 +106,35 @@ int main()
 			cars.pop_front();
 		}
 
-		// update car positions
-		for (auto car : cars)
-			car->step(time);
+		// update car positions, front car is manual
+        auto pcar = cars.rbegin();
+		auto pnext = cars.rbegin();
+		++pnext;
+		for (; pnext != cars.rend(); pcar++, pnext++)
+		{
+			Car& car = **pcar;
+			Car& next = **pnext;
+            if (&car == cars.front())
+            {
+                car.set_control(MANUAL);
+                cerr << "We should never have the front car here.\n";
+            }
+            else
+            {
+                car.set_control(AUTOMATIC1);
+            }
+            car.set_gas(car.get_auto_vel(next));
+			car.step(time);
+        }
+
+        //front car is special
+        cars.front()->set_control(MANUAL);
+        cars.front()->set_gas(cars.front()->get_auto_vel(*(cars.front())));
+        cars.front()->step(time);
 
 		// detect collisions
-		auto pcar = cars.rbegin();
-		auto pnext = cars.rbegin();
+		pcar = cars.rbegin();
+		pnext = cars.rbegin();
 		++pnext;
 		for (; pnext != cars.rend(); pcar++, pnext++)
 		{
@@ -154,8 +190,30 @@ int main()
 			stats.setString(stat_s.str());
 			stats.setPosition(10 + 200 * i, 34);
 			window.draw(stats);
+
+			stat_s.str("");
+			stat_s << float(car.get_control()) << " ctrl";
+			stats.setString(stat_s.str());
+			stats.setPosition(10 + 200 * i, 46);
+			window.draw(stats);
+
+			stat_s.str("");
+			stat_s << car.get_trg_vel() << " m/s target";
+			stats.setString(stat_s.str());
+			stats.setPosition(10 + 200 * i, 58);
+			window.draw(stats);
+
+//            cerr << i << " " << car.get_vel() << " " << car.get_trg_vel() << "\n";
 			++i;
 		}
+
+        // display time step
+        stat_s.str("");
+        stat_s << timescale << " timestep";
+        stats.setString(stat_s.str());
+        stats.setPosition(10, 490);
+        window.draw(stats);
+
 
 		window.setView(view);
 
