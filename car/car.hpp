@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <cfloat>
 #include <SFML/Graphics.hpp>
+#include <algorithm>
 
 // define manual and automatic control constants
 #ifndef MANUAL
@@ -18,6 +19,25 @@
 
 #ifndef AUTOMATIC1
 #define AUTOMATIC1 1
+#endif
+
+#ifndef AUTOMATIC2
+#define AUTOMATIC2 2
+#endif
+
+/* Reaction time factor of safety
+ * TODO Compute this based on accuracy of estimate to ensure
+ * 99.9% safety or something
+ */
+#ifndef PHI
+#define PHI float(1.1)
+#endif
+
+/* Vehicle length factor of safety
+ * TODO See if we really need this?  Change to track back of veh.
+ */
+#ifndef DELTA
+#define DELTA float(1.1)
 #endif
 
 #ifndef NUM_CONTROL_TYPES
@@ -40,6 +60,7 @@ class Car
 	float weight; // weight of vehicle in mg * m / s^2
 	float roll_r; // deceleration due to rolling resistance, constant for a given vehicle/tire types/mass
 	float drag;
+    float time_r; //reaction time in seconds
 
     unsigned char control; // manual, or type of self-driving
 
@@ -98,6 +119,12 @@ public:
 	void set_brake(float b);
 	// set control manual or automatic
 	void set_control(unsigned char c);
+
+    // get the distance from front to front
+    float get_headway(Car leader);
+
+    // get the safe stopping dist, front to front
+    float get_stop_d(Car leader);
 
     // get the automated velocity based on leading car
     float get_auto_vel(Car leader);

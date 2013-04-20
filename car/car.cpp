@@ -16,6 +16,7 @@ Car::Car(const sf::Vector2f& p)
     weight = mass * 9.81; // kg*m/s^2
     roll_r = 0.015 * 9.81; // maybe not big enough?
 	drag_m = (0.5 * 2.51516 * 0.45 * 1.225) / mass; // (1/2 * area of front of car * drag coefficient * density of air) / mass
+    time_r = 0.5; // reaction time, proxy for now
 
     control = MANUAL; // Which self-driving algorithm
 
@@ -40,11 +41,30 @@ void Car::set_control(unsigned char c)
 	control = c;
 }
 
+// Get the distance between my front bumper and the leader's back
+float Car::get_headway(Car leader)
+{
+    float my_front;
+    float lead_front;
+
+    my_front = get_pos() + get_size()/2;
+    lead_front = leader.get_pos() + DELTA * leader.get_size()/2;
+    return lead_front - my_front;
+}
+
+// Get the safe stopping distance, front to front
+float Car::get_stop_d(Car leader)
+{
+    return time_r * max_vel * PHI / 2 + leader.get_size() * DELTA;
+}
+
 // Get what the target gas setting of the car should be
 // given the car it is following.
 float Car::get_auto_vel(Car leader)
 {
     float new_vel;
+    float headway;
+    float stop_d;
     /* TODO Put self-driving algorithms into a nice array
      * algs[control] is the control scheme function.
      * No changes for MANUAL
@@ -57,7 +77,25 @@ float Car::get_auto_vel(Car leader)
             new_vel = trg_vel;
             break;
         case AUTOMATIC1:
+            // Follow the leader exactly
             new_vel = leader.get_vel();
+            break;
+        case AUTOMATIC2:
+            /* Go fast until we get close, then follow
+             * TODO still collides.  stopping calcs may be off
+             * Still problems, but making progess
+             */
+            headway = get_headway(leader);
+            stop_d = get_stop_d(leader);
+            if (headway > stop_d)
+            {
+                new_vel = max_vel;
+            }
+            else
+            {
+                new_vel = std::min(leader.vel,
+                    2 * (headway - DELTA * leader.get_size()) / (PHI * time_r));
+            }
             break;
         default:
             new_vel = leader.get_vel(); //Try not to crash

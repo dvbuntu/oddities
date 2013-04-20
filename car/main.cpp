@@ -55,7 +55,7 @@ int main()
 	cars.push_front(new Car(view.getCenter()));
 
 	cars.back()->set_gas(1);
-	cars.back()->set_control(AUTOMATIC1);
+	cars.back()->set_control(AUTOMATIC2);
 
 	float timescale = 1;
 	sf::Clock clock;
@@ -127,7 +127,7 @@ int main()
             }
             else
             {
-                car.set_control(AUTOMATIC1);
+                car.set_control(AUTOMATIC2);
             }
             car.set_gas(car.get_auto_vel(next));
 			car.step(time);
