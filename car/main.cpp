@@ -120,6 +120,7 @@ int main()
 			Car& car = **pcar;
 			Car& next = **pnext;
             // Reset the control algorithm, typ. for wrapped cars
+            /*
             if (&car == cars.front())
             {
                 car.set_control(MANUAL);
@@ -129,6 +130,7 @@ int main()
             {
                 car.set_control(AUTOMATIC2);
             }
+            */
             car.set_gas(car.get_auto_vel(next));
 			car.step(time);
         }
