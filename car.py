@@ -48,6 +48,9 @@ class car:
         if new_fig:
             pylab.figure()
         pylab.plot(points[:,0],points[:,1])
+    def collide(self, leading_car, position_reference_delta):
+        pass
+
 
 def test(pos_init = 3, v_init = 10, brake = 1, time_react = 0, start_time = 0, end_time = 20):
     lead = car(pos_init, v_init, brake, time_react) 
