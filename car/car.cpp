@@ -45,17 +45,21 @@ void Car::set_control(unsigned char c)
 float Car::get_headway(Car leader)
 {
     float my_front;
-    float lead_front;
+    //float lead_front;
+    float lead_back;
 
     my_front = get_pos() + get_size()/2;
-    lead_front = leader.get_pos() + DELTA * leader.get_size()/2;
-    return lead_front - my_front;
+    // this looks like it's computing front...which is wrong...
+//    lead_front = leader.get_pos() + DELTA * leader.get_size()/2;
+    lead_back = leader.get_pos() - DELTA * leader.get_size()/2; 
+    return lead_back - my_front;
 }
 
 // Get the safe stopping distance, front to front
+// derp, should be front to leader's back, no?
 float Car::get_stop_d(Car leader)
 {
-    return time_r * max_vel * PHI / 2 + leader.get_size() * DELTA;
+    return time_r * max_vel * PHI / 2; //+ leader.get_size() * DELTA;
 }
 
 // Get what the target gas setting of the car should be

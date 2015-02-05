@@ -1,0 +1,9 @@
+bugs
+---
+* AI gets confused when lead car wraps around, so it tries to max out speed then
+    * solution: change to super long (infinite?) track, and just move the view
+    * maybe have some trees in the background so you know that you're going?
+* AUTOMATIC2 not working right
+    * crashing with too high a velocity (low velocity acceptable?)
+    * get_stop_d probably bad?
+        * improved, but still problems
