@@ -57,6 +57,11 @@ float Car::get_headway(Car leader)
 
 // Get the safe stopping distance, front to front
 // derp, should be front to leader's back, no?
+// really depends on leader's characteristics as well
+// like difference in brk_max?
+// need to work this out on paper again
+// So, h such that maximum delta V when headway == 0 is < v_min_collision
+// given current positions, velocities, and decel characteristics
 float Car::get_stop_d(Car leader)
 {
     return time_r * max_vel * PHI / 2; //+ leader.get_size() * DELTA;
