@@ -21,6 +21,7 @@ h0 = leadx - follow_accx
 solve0 = h0 - h_init
 
 dhdt0 = solve0.differentiate(t)
+# t_max0 must occur between 0 and tr1
 t_max0 = dhdt0.solve(t)[0].right()
 
 h_max0 = [-1*solve0.substitute(t=0), -1*solve0.substitute(t=t_max0), -1*solve0.substitute(t=tr1)]
@@ -47,11 +48,8 @@ dhdt1 = solve1.differentiate(t)
 # t_max1 must occur between t
 t_max1 = dhdt1.solve(t)[0].right()
 
-h_max1 = [-1*solve1.substitute(t=tr1), -1*solve1.substitute(t=dhdt1), -1*solve1.substitute(t=ts0)]
-
-# back of lead car after stopping, final stopping position
-x0_fin = leadx.substitute(t=ts0)
-# x0_fin = -L0 + 3/2*v0^2/dec0 + x0
+# don't need to compute at lower bound, that's already done
+h_max1 = [-1*solve1.substitute(t=dhdt1), -1*solve1.substitute(t=ts0)]
 
 # following car velocity
 v1_dec = follow_tr1_v + dec1 * (t-tr1)
@@ -59,6 +57,23 @@ v1_dec = follow_tr1_v + dec1 * (t-tr1)
 # time when following car stops
 ts1 = v1_dec.solve(t)[0].right()
 # ts1 = -((acc1 - dec1)*tr1 + v1)/dec1
+
+# t_stopl <= t <= t_stopf
+h2 = leadx.substitute(t=ts0) - follow_decx
+
+# solve h0 for h_init
+solve2 = h2 - h_init
+
+dhdt2 = solve2.differentiate(t)
+# t_max1 must occur between t
+t_max2 = dhdt2.solve(t)[0].right()
+
+# don't need to compute at lower bound, that's already done
+h_max2 = [-1*solve2.substitute(t=dhdt2), -1*solve2.substitute(t=ts1)]
+
+# back of lead car after stopping, final stopping position
+x0_fin = leadx.substitute(t=ts0)
+# x0_fin = -L0 + 3/2*v0^2/dec0 + x0
 
 # front of the following car when stopped
 x1_fin = follow_decx.substitute(t=ts1)
