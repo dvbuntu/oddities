@@ -56,15 +56,34 @@ float Car::get_headway(Car leader)
 }
 
 // Get the safe stopping distance, front to front
-// derp, should be front to leader's back, no?
-// really depends on leader's characteristics as well
-// like difference in brk_max?
-// need to work this out on paper again
-// So, h such that maximum delta V when headway == 0 is < v_min_collision
-// given current positions, velocities, and decel characteristics
+// 7 possible stop points
+// 3 depend on a max falling within time bounds
 float Car::get_stop_d(Car leader)
 {
-    return time_r * max_vel * PHI / 2; //+ leader.get_size() * DELTA;
+    float h_max = 0, h_current;
+
+    // check time between 0 and time_r
+    h_current = 1/2*acc*(leader.get_vel() - vel)^2/(acc - leader.get_brk_max())^2 - 1/2*leader.get_brk_max()*(leader.get_vel() - vel)^2/(acc - leader.get_brk_max())^2 - (leader.get_vel() - vel)*leader.get_vel()/(acc - leader.get_brk_max()) + (leader.get_vel() - vel)*vel/(acc - leader.get_brk_max());
+    if (h_current > h_max) h_max = h_current;
+
+    h_current = 1/2*acc*time_r^2 - 1/2*leader.get_brk_max()*time_r^2 - time_r*leader.get_vel() + time_r*vel;
+    if (h_current > h_max) h_max = h_current;
+
+    // check time between time_r and time_stop_leader
+    h_current =  -1/2*(brk_max*(t - time_r) - leader.get_brk_max()*t + acc*time_r - leader.get_vel() + vel)^2*leader.get_brk_max() + 1/2*(brk_max*(t - time_r) - leader.get_brk_max()*t + acc*time_r + time_r - leader.get_vel() + vel)^2*brk_max + 1/2*acc*time_r^2 - (brk_max*(t - time_r) - leader.get_brk_max()*t + acc*time_r + time_r - leader.get_vel() + vel)*(acc*time_r + vel) + (brk_max*(t - time_r) - leader.get_brk_max()*t + acc*time_r - leader.get_vel() + vel)*leader.get_vel() + time_r*vel;
+    if (h_current > h_max) h_max = h_current;
+
+    h_current = 1/2*brk_max*(time_r - leader.get_vel()/leader.get_brk_max())^2 + 1/2*acc*time_r^2 - (acc*time_r + vel)*(time_r - leader.get_vel()/leader.get_brk_max()) + time_r*vel - 3/2*leader.get_vel()^2/leader.get_brk_max();
+    if (h_current > h_max) h_max = h_current;
+
+    // check time between time_stop_leader and time_stop_follower
+    h_current =  1/2*(brk_max*(t - time_r) + acc*time_r + time_r + vel)^2*brk_max + 1/2*acc*time_r^2 - (brk_max*(t - time_r) + acc*time_r + time_r + vel)*(acc*time_r + vel) + time_r*vel - 3/2*leader.get_vel()^2/leader.get_brk_max();
+    if (h_current > h_max) h_max = h_current;
+
+    h_current = 1/2*brk_max*(time_r + ((acc - brk_max)*time_r + vel)/brk_max)^2 + 1/2*acc*time_r^2 - (acc*time_r + vel)*(time_r + ((acc - brk_max)*time_r + vel)/brk_max) + time_r*vel - 3/2*leader.get_vel()^2/leader.get_brk_max();
+    if (h_current > h_max) h_max = h_current;
+
+    return h_max;
 }
 
 // Get what the target gas setting of the car should be
@@ -107,7 +126,7 @@ float Car::get_auto_vel(Car leader)
             }
             break;
         default:
-            new_vel = leader.get_vel(); //Try not to crash
+            new_vel = std::min(max_vel, leader.get_vel()); //Try not to crash
     }
 
     return new_vel / (float)max_vel;
