@@ -107,6 +107,10 @@ public:
     {
         return control;
     }
+    inline float get_brk_max() const
+    {
+        return brk_max;
+    }
 
 	void set_pos(float p)
 	{

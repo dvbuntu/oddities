@@ -45,7 +45,7 @@ ts0 = v0 / dec0
 solve1 = h1 - h_init
 
 dhdt1 = solve1.differentiate(t)
-# t_max1 must occur between t
+# t_max1 must occur between tr1 and ts0 (careful about divide by zero, that means huge scale t, so throw out
 t_max1 = dhdt1.solve(t)[0].right()
 
 # don't need to compute at lower bound, that's already done
