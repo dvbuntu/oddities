@@ -61,26 +61,40 @@ float Car::get_headway(Car leader)
 float Car::get_stop_d(Car leader)
 {
     float h_max = 0, h_current;
+    float time_test;
+    float time_stop_lead;
+    float time_stop_follow;
 
     // check time between 0 and time_r
-    h_current = 1/2*acc*(leader.get_vel() - vel)^2/(acc - leader.get_brk_max())^2 - 1/2*leader.get_brk_max()*(leader.get_vel() - vel)^2/(acc - leader.get_brk_max())^2 - (leader.get_vel() - vel)*leader.get_vel()/(acc - leader.get_brk_max()) + (leader.get_vel() - vel)*vel/(acc - leader.get_brk_max());
-    if (h_current > h_max) h_max = h_current;
+    time_test = (leader.get_vel() - vel)/(acc - leader.get_brk_max() + FLT_EPSILON);
+    if (0 < time_test && time_test < time_r) {
+        h_current = 1/2*acc*(leader.get_vel() - vel)^2/(acc - leader.get_brk_max() + FLT_EPSILON)^2 - 1/2*leader.get_brk_max()*(leader.get_vel() - vel)^2/(acc - leader.get_brk_max())^2 - (leader.get_vel() - vel)*leader.get_vel()/(acc - leader.get_brk_max() + FLT_EPSILON) + (leader.get_vel() - vel)*vel/(acc - leader.get_brk_max() + FLT_EPSILON);
+        if (h_current > h_max) h_max = h_current;
+    }
 
     h_current = 1/2*acc*time_r^2 - 1/2*leader.get_brk_max()*time_r^2 - time_r*leader.get_vel() + time_r*vel;
     if (h_current > h_max) h_max = h_current;
 
     // check time between time_r and time_stop_leader
-    h_current =  -1/2*(brk_max*(t - time_r) - leader.get_brk_max()*t + acc*time_r - leader.get_vel() + vel)^2*leader.get_brk_max() + 1/2*(brk_max*(t - time_r) - leader.get_brk_max()*t + acc*time_r + time_r - leader.get_vel() + vel)^2*brk_max + 1/2*acc*time_r^2 - (brk_max*(t - time_r) - leader.get_brk_max()*t + acc*time_r + time_r - leader.get_vel() + vel)*(acc*time_r + vel) + (brk_max*(t - time_r) - leader.get_brk_max()*t + acc*time_r - leader.get_vel() + vel)*leader.get_vel() + time_r*vel;
-    if (h_current > h_max) h_max = h_current;
+    time_stop_lead = leader.get_vel() / leader.get_brk_max();
+    time_test = ((acc - brk_max)*time_r - leader.get_vel() + vel)/(leader.get_brk_max() - brk_max + FLT_EPSILON);
+    if (time_r < time_test && time_test < time_stop_lead) {
+        h_current =  -1/2*(brk_max*(t - time_r) - leader.get_brk_max()*t + acc*time_r - leader.get_vel() + vel)^2*leader.get_brk_max() + 1/2*(brk_max*(t - time_r) - leader.get_brk_max()*t + acc*time_r + time_r - leader.get_vel() + vel)^2*brk_max + 1/2*acc*time_r^2 - (brk_max*(t - time_r) - leader.get_brk_max()*t + acc*time_r + time_r - leader.get_vel() + vel)*(acc*time_r + vel) + (brk_max*(t - time_r) - leader.get_brk_max()*t + acc*time_r - leader.get_vel() + vel)*leader.get_vel() + time_r*vel;
+        if (h_current > h_max) h_max = h_current;
+    }
 
-    h_current = 1/2*brk_max*(time_r - leader.get_vel()/leader.get_brk_max())^2 + 1/2*acc*time_r^2 - (acc*time_r + vel)*(time_r - leader.get_vel()/leader.get_brk_max()) + time_r*vel - 3/2*leader.get_vel()^2/leader.get_brk_max();
+    h_current = 1/2*brk_max*(time_r - leader.get_vel()/leader.get_brk_max() + FLT_EPSILON)^2 + 1/2*acc*time_r^2 - (acc*time_r + vel)*(time_r - leader.get_vel()/leader.get_brk_max() + FLT_EPSILON) + time_r*vel - 3/2*leader.get_vel()^2/(leader.get_brk_max() + FLT_EPSILON);
     if (h_current > h_max) h_max = h_current;
 
     // check time between time_stop_leader and time_stop_follower
-    h_current =  1/2*(brk_max*(t - time_r) + acc*time_r + time_r + vel)^2*brk_max + 1/2*acc*time_r^2 - (brk_max*(t - time_r) + acc*time_r + time_r + vel)*(acc*time_r + vel) + time_r*vel - 3/2*leader.get_vel()^2/leader.get_brk_max();
-    if (h_current > h_max) h_max = h_current;
+    time_stop_follow = -((acc - brk_max)*time_r + vel)/(brk_max + FLT_EPSILON);
+    time_test = -((acc - brk_max)*time_r + vel)/(brk_max + FLT_EPSILON);
+    if (time_stop_lead < time_test && time_test < time_stop_follow) {
+        h_current =  1/2*(brk_max*(t - time_r) + acc*time_r + time_r + vel)^2*brk_max + 1/2*acc*time_r^2 - (brk_max*(t - time_r) + acc*time_r + time_r + vel)*(acc*time_r + vel) + time_r*vel - 3/2*leader.get_vel()^2/(leader.get_brk_max() + FLT_EPSILON);
+        if (h_current > h_max) h_max = h_current;
+    }
 
-    h_current = 1/2*brk_max*(time_r + ((acc - brk_max)*time_r + vel)/brk_max)^2 + 1/2*acc*time_r^2 - (acc*time_r + vel)*(time_r + ((acc - brk_max)*time_r + vel)/brk_max) + time_r*vel - 3/2*leader.get_vel()^2/leader.get_brk_max();
+    h_current = 1/2*brk_max*(time_r + ((acc - brk_max)*time_r + vel)/(brk_max + FLT_EPSILON))^2 + 1/2*acc*time_r^2 - (acc*time_r + vel)*(time_r + ((acc - brk_max)*time_r + vel)/(brk_max + FLT_EPSILON)) + time_r*vel - 3/2*leader.get_vel()^2/(leader.get_brk_max() + FLT_EPSILON);
     if (h_current > h_max) h_max = h_current;
 
     return h_max;
@@ -122,7 +136,8 @@ float Car::get_auto_vel(Car leader)
             else
             {
                 new_vel = std::min(leader.vel,
-                    2 * (headway - DELTA * leader.get_size()) / (PHI * time_r));
+                        headway / (stop_d + FLT_EPSILON);
+                //    2 * (headway ) / (PHI * time_r));
             }
             break;
         default:
