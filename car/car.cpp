@@ -4,7 +4,7 @@
 
 // hardcoded for now. It's a Honda Civic
 Car::Car(const sf::Vector2f& p)
-	: rect(sf::Vector2f(4.55676, 1.7526))
+	: rect(sf::Vector2f(CAR_LEN, CAR_WID))
 {
 	vel = 0;
 	trg_vel = 0;

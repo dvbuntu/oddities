@@ -22,9 +22,14 @@ using std::cout;
 using std::endl;
 using std::rand;
 
+#ifndef NUM_TREES
+#define NUM_TREES (10)
+#endif
+
 int main()
 {
 	std::srand(std::time(nullptr));
+    unsigned int i;
 
 	// load resources
 	sf::Font font;
@@ -41,7 +46,8 @@ int main()
 	window.setView(view);
 
 	float width = view.getSize().x;
-	//float right = width / 2 + view.getCenter().x;
+	float right = width / 2 + view.getCenter().x;
+	float left = view.getCenter().x - width / 2;
 
 	sf::Text stats("", font, 12);
 	stats.setColor(sf::Color::White);
@@ -57,6 +63,16 @@ int main()
 	cars.back()->set_gas(1);
 	cars.back()->set_control(AUTOMATIC2);
 
+    // list of trees to help gauge speed
+    std::list<sf::CircleShape*> trees;
+    for(i = 0; i < NUM_TREES; i++)
+    {
+        trees.push_front(new sf::CircleShape(CAR_WID));
+        trees.front()->setPosition(left + i * width / NUM_TREES, view.getCenter().y - CAR_WID*4);
+        trees.front()->setFillColor(sf::Color::Green);
+    }
+
+
 	float timescale = 1;
 	sf::Clock clock;
 
@@ -65,8 +81,11 @@ int main()
 	// game loop
 	while (window.isOpen())
 	{
+        // advance the aerial recon satellite :p
         camera = cars.front()->get_pos();
         view.setCenter(camera,view.getCenter().y);
+        left = view.getCenter().x - width / 2;
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -176,13 +195,22 @@ int main()
 		// draw
 		window.clear(background);
 
+        // draw the cars
 		for (auto car : cars)
 			car->draw_on(window);
+
+        // move and draw the trees
+        for (auto tree : trees)
+        {
+            if (tree->getPosition().x + tree->getRadius()*2 < left)
+                tree->move(width,0);
+            window.draw(*tree);
+        }
 
 		// draw car stats
 		window.setView(window.getDefaultView());
 
-		unsigned int i = 0;
+		i = 0;
 		for (auto pcar = cars.rbegin(); pcar != cars.rend(); pcar++)
 		{
 			const Car& car = **pcar;
@@ -214,6 +242,12 @@ int main()
 			stat_s << car.get_trg_vel() << " m/s target";
 			stats.setString(stat_s.str());
 			stats.setPosition(10 + 200 * i, 58);
+			window.draw(stats);
+
+			stat_s.str("");
+			stat_s << car.get_pos() << " position";
+			stats.setString(stat_s.str());
+			stats.setPosition(10 + 200 * i, 70);
 			window.draw(stats);
 
 //            cerr << i << " " << car.get_vel() << " " << car.get_trg_vel() << "\n";

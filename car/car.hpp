@@ -25,6 +25,14 @@
 #define AUTOMATIC2 2
 #endif
 
+#ifndef CAR_LEN
+#define CAR_LEN 4.55676
+#endif
+
+#ifndef CAR_WID
+#define CAR_WID 1.7526
+#endif
+
 /* Reaction time factor of safety
  * TODO Compute this based on accuracy of estimate to ensure
  * 99.9% safety or something
