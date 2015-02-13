@@ -7,3 +7,5 @@ bugs
     * crashing with too high a velocity (low velocity acceptable?)
     * get_stop_d probably bad?
         * improved, but still problems
+    * I think this is ok now
+* collision detection thinks it collides if they get too far apart...probably a wrapping issue?

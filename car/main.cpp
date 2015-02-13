@@ -22,6 +22,10 @@ using std::cout;
 using std::endl;
 using std::rand;
 
+#ifndef NUM_CARS
+#define NUM_CARS (5)
+#endif
+
 #ifndef NUM_TREES
 #define NUM_TREES (10)
 #endif
@@ -57,11 +61,17 @@ int main()
 	sf::Color background(22, 22, 22);
 
 	std::list<Car*> cars;
-	cars.push_front(new Car(view.getCenter() - sf::Vector2f(width / 2, 0)));
-	cars.push_front(new Car(view.getCenter()));
+    for(i = 0; i < NUM_CARS; i++)
+    {
+        cars.push_front(new Car(sf::Vector2f(left + i * width / NUM_CARS, view.getCenter().y)));
+        cars.front()->set_gas(1);
+        cars.front()->set_control(AUTOMATIC2);
+    }
 
-	cars.back()->set_gas(1);
-	cars.back()->set_control(AUTOMATIC2);
+    // change the leader to manual
+    cars.front()->set_gas(0);
+    cars.front()->set_control(MANUAL);
+
 
     // list of trees to help gauge speed
     std::list<sf::CircleShape*> trees;
@@ -214,6 +224,12 @@ int main()
 		for (auto pcar = cars.rbegin(); pcar != cars.rend(); pcar++)
 		{
 			const Car& car = **pcar;
+			stat_s.str("");
+			stat_s << i << " ID";
+			stats.setString(stat_s.str());
+			stats.setPosition(10 + 200 * i, 0);
+			window.draw(stats);
+
 			stat_s.str("");
 			stat_s << car.get_vel() << " m/s";
 			stats.setString(stat_s.str());
