@@ -8,4 +8,4 @@ bugs
     * get_stop_d probably bad?
         * improved, but still problems
     * I think this is ok now
-* collision detection thinks it collides if they get too far apart...probably a wrapping issue?
+* I had back cars collide still (but correctly interpreted)...not sure why
