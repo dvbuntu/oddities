@@ -49,7 +49,7 @@ dhdt1 = solve1.differentiate(t)
 t_max1 = dhdt1.solve(t)[0].right()
 
 # don't need to compute at lower bound, that's already done
-h_max1 = [-1*solve1.substitute(t=dhdt1), -1*solve1.substitute(t=ts0)]
+h_max1 = [-1*solve1.substitute(t=t_max1), -1*solve1.substitute(t=ts0)]
 
 # following car velocity
 v1_dec = follow_tr1_v + dec1 * (t-tr1)
@@ -69,7 +69,7 @@ dhdt2 = solve2.differentiate(t)
 t_max2 = dhdt2.solve(t)[0].right()
 
 # don't need to compute at lower bound, that's already done
-h_max2 = [-1*solve2.substitute(t=dhdt2), -1*solve2.substitute(t=ts1)]
+h_max2 = [-1*solve2.substitute(t=t_max2), -1*solve2.substitute(t=ts1)]
 
 # back of lead car after stopping, final stopping position
 x0_fin = leadx.substitute(t=ts0)
