@@ -41,7 +41,7 @@ int main()
 	window.setView(view);
 
 	float width = view.getSize().x;
-	float right = width / 2 + view.getCenter().x;
+	//float right = width / 2 + view.getCenter().x;
 
 	sf::Text stats("", font, 12);
 	stats.setColor(sf::Color::White);
@@ -60,9 +60,13 @@ int main()
 	float timescale = 1;
 	sf::Clock clock;
 
+    float camera;
+
 	// game loop
 	while (window.isOpen())
 	{
+        camera = cars.front()->get_pos();
+        view.setCenter(camera,view.getCenter().y);
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -99,12 +103,14 @@ int main()
 		clock.restart();
 
 		// wrap cars around screen
+        /*
 		while (cars.front()->get_pos() > right)
 		{
 			cars.front()->set_pos(cars.front()->get_pos() - width - cars.front()->get_size());
 			cars.push_back(cars.front());
 			cars.pop_front();
 		}
+        */
 
 		// update car positions, front car is manual
         // pcar is the trailing vehicle
