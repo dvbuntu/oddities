@@ -50,7 +50,7 @@ int main()
 	window.setView(view);
 
 	float width = view.getSize().x;
-	float right = width / 2 + view.getCenter().x;
+    //float right = width / 2 + view.getCenter().x;
 	float left = view.getCenter().x - width / 2;
 
 	sf::Text stats("", font, 12);
@@ -178,6 +178,7 @@ int main()
 		pcar = cars.rbegin();
 		pnext = cars.rbegin();
 		++pnext;
+        i = 0;
 		for (; pnext != cars.rend(); pcar++, pnext++)
 		{
 			Car& car = **pcar;
@@ -185,14 +186,18 @@ int main()
 			if (car.get_rect().intersects(next.get_rect()))
 			{
 				cerr << "Collision at " << (car.get_vel() - next.get_vel()) << " m/s\n";
+				cerr << "Between " << i << " and " << i+1 << "\n";
+				cerr << "At " << (car.get_pos() - CAR_LEN) << "\n";
 				// backup so the cars don't overlap TODO physics!?!?!?!?
 				car.set_pos(next.get_pos() - car.get_size());
 				// pause
 				timescale = 0;
 			}
+            ++i;
 		}
 
 		// have to handle last car differently due to wrapping TODO better way?
+        /*
 		sf::FloatRect back_rect = cars.front()->get_rect();
 		back_rect.left -= width + cars.front()->get_size();
 		if (back_rect.intersects(cars.back()->get_rect()))
@@ -201,6 +206,7 @@ int main()
 			cars.front()->set_pos(cars.back()->get_pos() + width);
 			timescale = 0;
 		}
+        */
 
 		// draw
 		window.clear(background);
