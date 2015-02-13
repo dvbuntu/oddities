@@ -24,6 +24,36 @@ Car::Car(const sf::Vector2f& p)
 	rect.setFillColor(sf::Color(std::rand() % 256, std::rand() % 256, std::rand() % 256));
 }
 
+// Civic with some variance...
+Car::Car(const sf::Vector2f& p, bool var)
+	: rect(sf::Vector2f(CAR_LEN, CAR_WID))
+{
+	vel = 0;
+	trg_vel = 0;
+	brk_acc = 0;
+	brk_max = -37.17112; // 60-0 in 127 feet
+	max_vel = 53.6448; // 120mph
+	max_acc = 5.509; // 0-60 in 7.1 seconds (accounting for drag and such)
+    mass = 1242.84; // 2740 lb
+    weight = mass * 9.81; // kg*m/s^2
+    roll_r = 0.015 * 9.81; // maybe not big enough?
+	drag_m = (0.5 * 2.51516 * 0.45 * 1.225) / mass; // (1/2 * area of front of car * drag coefficient * density of air) / mass
+    time_r = 0.5; // reaction time, proxy for now
+
+    if (var)
+    {
+        brk_max += std::rand() % BRK_VAR - BRK_VAR/2;
+        max_vel += std::rand() % VEL_VAR - VEL_VAR/2;
+        max_acc += std::rand() % ACC_VAR - ACC_VAR/2;
+        mass += std::rand() % MASS_VAR - MASS_VAR/2;
+        time_r += (std::rand() % int (TIME_R_VAR*100))/ 100 - TIME_R_VAR/2;
+    }
+    control = MANUAL; // Which self-driving algorithm
+
+	rect.setPosition(p);
+	rect.setFillColor(sf::Color(std::rand() % 256, std::rand() % 256, std::rand() % 256));
+}
+
 void Car::set_gas(float g)
 {
 //	brk_acc = 0;
@@ -109,7 +139,6 @@ float Car::get_auto_vel(Car leader)
 {
     float new_vel;
     float headway;
-    float stop_d;
     /* TODO Put self-driving algorithms into a nice array
      * algs[control] is the control scheme function.
      * No changes for MANUAL

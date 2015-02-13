@@ -23,7 +23,7 @@ using std::endl;
 using std::rand;
 
 #ifndef NUM_CARS
-#define NUM_CARS (5)
+#define NUM_CARS (4)
 #endif
 
 #ifndef NUM_TREES
@@ -63,15 +63,16 @@ int main()
 	std::list<Car*> cars;
     for(i = 0; i < NUM_CARS; i++)
     {
-        cars.push_front(new Car(sf::Vector2f(left + i * width / NUM_CARS, view.getCenter().y)));
+        cars.push_front(new Car(sf::Vector2f(left + i * width / NUM_CARS, view.getCenter().y), true));
+        //cars.push_front(new Car(sf::Vector2f(left + i * width / NUM_CARS, view.getCenter().y)));
         cars.front()->set_gas(1);
         cars.front()->set_control(AUTOMATIC2);
     }
 
-    // change the leader to manual
+    // change the leader to manual and cut down our speed
     cars.front()->set_gas(0);
     cars.front()->set_control(MANUAL);
-
+    cars.front()->set_max_vel(cars.front()->get_max_vel() / 2);
 
     // list of trees to help gauge speed
     std::list<sf::CircleShape*> trees;
@@ -271,6 +272,14 @@ int main()
 			stats.setString(stat_s.str());
 			stats.setPosition(10 + 200 * i, 70);
 			window.draw(stats);
+
+            if (pcar != cars.rend()) {
+                stat_s.str("");
+                stat_s << car.get_current_stop_d() << " m follow dist";
+                stats.setString(stat_s.str());
+                stats.setPosition(10 + 200 * i, 80);
+                window.draw(stats);
+            }
 
 //            cerr << i << " " << car.get_vel() << " " << car.get_trg_vel() << "\n";
 			++i;

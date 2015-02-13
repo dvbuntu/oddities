@@ -33,6 +33,26 @@
 #define CAR_WID 1.7526
 #endif
 
+#ifndef BRK_VAR
+#define BRK_VAR 2
+#endif
+
+#ifndef VEL_VAR
+#define VEL_VAR 3
+#endif
+
+#ifndef ACC_VAR
+#define ACC_VAR 1
+#endif
+
+#ifndef MASS_VAR
+#define MASS_VAR 50
+#endif
+
+#ifndef TIME_R_VAR
+#define TIME_R_VAR 0.1
+#endif
+
 /* Reaction time factor of safety
  * TODO Compute this based on accuracy of estimate to ensure
  * 99.9% safety or something
@@ -70,11 +90,24 @@ class Car
 	float drag;
     float time_r; //reaction time in seconds
 
+    float stop_d; // Safe following distance between us and leader
+
     unsigned char control; // manual, or type of self-driving
 
 	sf::RectangleShape rect;
 public:
 	Car(const sf::Vector2f& p);
+	Car(const sf::Vector2f& p, bool var);
+
+    void set_max_vel(float mv)
+    {
+        max_vel = mv;
+    }
+
+	inline float get_max_vel() const
+	{
+		return max_vel;
+	}
 
 	inline float get_pos() const
 	{
@@ -91,6 +124,11 @@ public:
 		return rect.getGlobalBounds();
 	}
 
+	inline float get_current_stop_d() const
+	{
+		return stop_d;
+	}
+
 	inline float get_vel() const
 	{
 		return vel;
@@ -105,6 +143,11 @@ public:
 	{
 		return acc;
 	}
+
+    void set_acc(float a)
+    {
+        acc = a;
+    }
 
 	inline float get_drag() const
 	{

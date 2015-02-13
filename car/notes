@@ -8,4 +8,27 @@ bugs
     * get_stop_d probably bad?
         * improved, but still problems
     * I think this is ok now
+    * always reporting the stop_d as 0....hmmm, do I have a min where I should have a max?
+        * no, taking the max...but maybe extra minus sign?
+        * ok, broadly applying didn't work...
+            * how are stopping_dists ever less than zero?
+            * ok, missed one minus
+            * but positive stopping dist is causing crashes...
+                * maybe a minus is all off, just in the direction I'm substracting...yea
+                * well, muck with signs too
+            * so still getting regular crashes...
+                * is the target velocity a mistake?
+                * that's not really the problem..
+        * could be that stopping_d is off, really ought to be more than a meter...
+            * some unit conversion is bad?
+                * it's all meters, m/s, and m/s**2  and kg I guess
 * I had back cars collide still (but correctly interpreted)...not sure why
+
+issues
+---
+* AUTOMATIC2 seems a little conservative (but it did crash once)
+    * I guess not accounting for drag could be part of that...
+    * derp, computing very small acceptable distances...
+    * seems ok when turning back into normal...
+    * full stop stopping dist has strange affects on things
+        * when actual headway is less than this, it gets a little odd
