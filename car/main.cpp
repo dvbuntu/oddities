@@ -125,7 +125,7 @@ int main()
 						timescale++;
 						break;
 					case sf::Keyboard::D:
-                        if (timescale >0) timescale--;
+                        if (timescale > 0) timescale--;
 						break;
 					default:
 						break;
