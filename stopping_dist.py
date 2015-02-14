@@ -71,6 +71,9 @@ t_max2 = dhdt2.solve(t)[0].right()
 # don't need to compute at lower bound, that's already done
 h_max2 = [-1*solve2.substitute(t=t_max2), -1*solve2.substitute(t=ts1)]
 
+# substitution
+[h.substitute(acc1 = 4.78, tr1 = 0.5, dec0 = -37.1711, dec1 = -37.17, v0 = 1.63, v1 = 7.08) for h in [h_max0[0], h_max0[1], h_max0[2], h_max1[0], h_max1[1], h_max2[0], h_max2[1]]]
+
 # back of lead car after stopping, final stopping position
 x0_fin = leadx.substitute(t=ts0)
 # x0_fin = -L0 + 3/2*v0^2/dec0 + x0

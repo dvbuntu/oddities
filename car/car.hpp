@@ -11,6 +11,7 @@
 #include <cfloat>
 #include <SFML/Graphics.hpp>
 #include <algorithm>
+#include <iostream>
 
 // define manual and automatic control constants
 #ifndef MANUAL
@@ -53,6 +54,10 @@
 #define TIME_R_VAR 0.1
 #endif
 
+#ifndef MIN_SAFE_HEADWAY
+#define MIN_SAFE_HEADWAY 1
+#endif
+
 /* Reaction time factor of safety
  * TODO Compute this based on accuracy of estimate to ensure
  * 99.9% safety or something
@@ -91,6 +96,7 @@ class Car
     float time_r; //reaction time in seconds
 
     float stop_d; // Safe following distance between us and leader
+    float current_headway; // Actual headway
 
     unsigned char control; // manual, or type of self-driving
 
@@ -98,6 +104,16 @@ class Car
 public:
 	Car(const sf::Vector2f& p);
 	Car(const sf::Vector2f& p, bool var);
+
+    void set_current_headway(float headway)
+    {
+        current_headway = headway;
+    }
+
+	inline float get_current_headway() const
+	{
+		return current_headway;
+	}
 
     void set_max_vel(float mv)
     {

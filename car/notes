@@ -32,3 +32,13 @@ issues
     * seems ok when turning back into normal...
     * full stop stopping dist has strange affects on things
         * when actual headway is less than this, it gets a little odd
+        * maybe problem is when stopped?  I still have max_brk, but really this should be zero in this situation?  Not worried about going backwards...though I suppose that's possible.
+            * if both stopped, return zero?
+                * or min headway...this causes lots of stop and go...so wrong
+                * safe headway when speed is small should be almost the same as safe headway when stopped
+                * this is true, but when front car changes (add accel), the value changes...safe headway distance decreases (so we can inch a little closer).  But the stopped headway distance does not follow this...
+                * hmm, maybe h_max0[2] not computed right (this is driver hitting leader before reacting)
+                    * sage gives 7.96
+                    * problem between 1/2 and 0.5, so replace with 0.5
+                * and now we're back to collisions...
+                    * maybe not aggressive enough slowing down...

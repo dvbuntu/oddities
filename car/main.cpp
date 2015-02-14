@@ -121,6 +121,12 @@ int main()
 					case sf::Keyboard::Space:
 						timescale = 1 - timescale;
 						break;
+					case sf::Keyboard::T:
+						timescale++;
+						break;
+					case sf::Keyboard::D:
+                        if (timescale >0) timescale--;
+						break;
 					default:
 						break;
 				}
@@ -275,9 +281,15 @@ int main()
 
             if (pcar != cars.rend()) {
                 stat_s.str("");
-                stat_s << car.get_current_stop_d() << " m follow dist";
+                stat_s << car.get_current_stop_d() << " m safe dist";
                 stats.setString(stat_s.str());
                 stats.setPosition(10 + 200 * i, 80);
+                window.draw(stats);
+
+                stat_s.str("");
+                stat_s << car.get_current_headway() << " m follow dist";
+                stats.setString(stat_s.str());
+                stats.setPosition(10 + 200 * i, 92);
                 window.draw(stats);
             }
 
