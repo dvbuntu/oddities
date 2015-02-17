@@ -1,0 +1,15 @@
+%\begin{tikzpicture}
+%    \node[rectangle] {Rectangle}
+%
+\begin{tikzpicture}[scale=2]
+    \tikzstyle{ann} = [draw=none,fill=none,right]
+    \matrix[nodes={draw, thin},
+        row sep=0.3cm,column sep=0.5cm] {
+    \node[rectangle] (follow) {$v_f\rightarrow$}; &
+    \node[rectangle] (lead) {$v_l\rightarrow$};\\
+    };
+    \node [above] at (follow.north) {$a_f\rightarrow$};
+    \node [above] at (lead.north) {$d_l\leftarrow$};
+    \node [below] at (follow.south) {Follower};
+    \node [below] at (lead.south) {Leader};
+\end{tikzpicture}
