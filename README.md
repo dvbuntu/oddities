@@ -1,31 +1,12 @@
 oddities
 ========
-Collaborative project on something.
+Collaborative project on self-driving car simulation
 
-Ideas
------
-- Real Time Strategy sandbox game
- + Units attack by ramming, damage proportional to energy lost in collision/rel speed
- + Ancient naval warfare simulator (triremes and such)
- + Call it "Trimeme" and make it about internetz
- + Could even test out self-driving car things in such a framework (self driving triremes? :p
-- self-driving car algorithms/ traffic simulator
- + Have a basic simulator working, you drive, comp follows
- + very naive algorithm implemented
- + Need to derive optimal algorithm and implement
- + TODO change how cars target movement, setting velocity seems...odd
+Self-driving Algorithm Development
+---
+[Description](car/headway.md) of phases of stopping a vehicle and necessary initial headways to avoid collision.
 
-Languages
----------
-- python
-- ruby
-- c
-- c++
 
-Other Stuff
------------
-
-SFML?
 
 Code so far
 -----------
