@@ -1,25 +1,22 @@
-There are three modes during which a rear end collision can occur with a sudden stop of the leading vehicle.  At time `t=0`, the leader beings braking for whatever reason.  The first phase is a until the follower reacts and hits its brakes, `t_r`.  At time `t=t_r`, phase two begins and now both vehicles are slowing down, but the follower may still be going too fast.  When the leader finally stops, `t=t_{stop}^l`, phase three begins as the follower continues.  If the follower stops here without a collision, phase three ends and all is safe.
+There are three modes during which a rear end collision can occur with a sudden stop of the leading vehicle.  At time `t=0`, the leader beings braking for whatever reason.  The first phase is a until the follower reacts and hits its brakes, `t_r`.  At time `t=t_r`, phase two begins and now both vehicles are slowing down, but the follower may still be going too fast.  When the leader finally stops, `t=t_stop^l`, phase three begins as the follower continues.  If the follower stops here without a collision, phase three ends and all is safe.
 
-To ensure safety, we must be sure that tour actual headway is greater than the initial crashing headway across these phases.  That is, find the maximum initial headway that just barely results in a crash and make our safe following headway more than that.  The easy way to get the max is to ocmpute `h_{init}` at each transition time as well as the time of the max headway within each phase.  This is nominally seven points, including `h_{init} = 0` at `t=0` as the first point.
+To ensure safety, we must be sure that tour actual headway is greater than the initial crashing headway across these phases.  That is, find the maximum initial headway that just barely results in a crash and make our safe following headway more than that.  The easy way to get the max is to ocmpute `h_init` at each transition time as well as the time of the max headway within each phase.  This is nominally seven points, including `h_init = 0` at `t=0` as the first point.
 
-To find the time of max headway within a phase, we solve `dh_{init}/dt = 0` for `t`.  First, verify that `t_{max}^i` (the time at which the max occurs within phase `i`) is within the actual time bounds for that phase (see Table \ref{tab:headway}).  Now, this could also be a minimum headway.  But, it's more effort to determine that than to simply compute the headway and compare.  As all the phases are quadratic in time, they have one global max or min, so we need not worry about multiple solutions.  So, find the right times for the right phases, compute all the headways (including at phase transitions), and take the longest to avoid all rear-end collisions from sudden stops.
+To find the time of max headway within a phase, we solve `dh_init/dt = 0` for `t`.  First, verify that `t_max^i` (the time at which the max occurs within phase `i`) is within the actual time bounds for that phase (see Table \ref{tab:headway}).  Now, this could also be a minimum headway.  But, it's more effort to determine that than to simply compute the headway and compare.  As all the phases are quadratic in time, they have one global max or min, so we need not worry about multiple solutions.  So, find the right times for the right phases, compute all the headways (including at phase transitions), and take the longest to avoid all rear-end collisions from sudden stops.
 
-| Phase                    |   Start `t`       | End `t`        | `h_init` for crash    |   Diagram          |
-| ------------------------ | ----------------- | -------------- | --------------------- | ------------------ |
-| 0 -> 1                   | -                 | 0              | 0                     |                    |
-| 1                        | 0                 | `t_r`          | ![phase1]             | \input{diag1.tex}  |
-| 1 -> 2                   | -                 | `t_r`          | ![phase12]            |                    |
-| 2                        | `t_r`             | `t_{stop}^l`   | ![phase2]             | \input{diag2.tex}  |
-| 2 -> 3                   | -                 | `t_{stop}^l`   | ![phase23]            |                    |
-| 3                        | `t_{stop}^l`      | `t_{stop}^f`   | ![phase3]             | \input{diag3.tex}  |
-| 3 -> Fin                 | -                 | `t_{stop}^f`   | ![phase3fin]          |                    |
+| Phase                    |   Start `t`       | End `t`        | `h_init` for crash      |   Diagram          |
+| ------------------------ | ----------------- | -------------- | ----------------------- | ------------------ |
+| 0 -> 1                   | -                 | 0              | 0                       |                    |
+| 1                        | 0                 | `t_r`          | ![][phase1]             | ![][diag1]         |
+| 1 -> 2                   | -                 | `t_r`          | ![][phase12]            |                    |
+| 2                        | `t_r`             | `t_stop^l`     | ![][phase2]             | ![][diag2]         |
+| 2 -> 3                   | -                 | `t_stop^l`     | ![][phase23]            |                    |
+| 3                        | `t_stop^l`        | `t_stop^f`     | ![][phase3]             | ![][diag2]         |
+| 3 -> Fin                 | -                 | `t_stop^f`     | ![][phase3fin]          |                    |
 
-![Phase 1][phase1]
-![Phase 1 to 2][phase12]
-![Phase 2][phase2]
-![Phase 2 to 3][phase23]
-![Phase 3][phase3]
-![Phase 3 to Finish][phase3fin]
+[diag1]: https://imgur.com/XuLvRvft.png
+[diag2]: https://imgur.com/gTgJi8it.png
+[diag3]: https://imgur.com/e7FJ6Z6t.png
 
 [phase1]: http://latex.codecogs.com/gif.latex?-%5Cfrac%7B%28v_l%20-%20v_f%29%5E2%7D%7B2%20%28a_f%20-%20d_l%29%7D
 <!-- \frac{a+b}{a-b^2} -->
