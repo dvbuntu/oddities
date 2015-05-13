@@ -175,9 +175,14 @@ float Car::get_auto_vel(Car leader)
             headway = get_headway(leader);
             set_current_headway(headway);
             stop_d = get_stop_d(leader);
-            if (headway > stop_d)
+            if (headway > 1.1*stop_d)
             {
                 new_vel = max_vel;
+            }
+            else if (headway > stop_d)
+            {
+                // should ramp down target velocity so it's max at 2xstop_d and - and stop_d
+                new_vel = headway / (stop_d + FLT_EPSILON);
             }
             else
             {
