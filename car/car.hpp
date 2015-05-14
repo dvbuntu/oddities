@@ -77,6 +77,11 @@
 #define NUM_CONTROL_TYPES 2 // hard-coded, easy way to automate?
 #endif
 
+// factor for slowing down before stopping distance limit
+#ifndef STOP_PHI
+#define STOP_PHI (2)
+#endif
+
 
 class Car
 {
