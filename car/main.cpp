@@ -43,7 +43,7 @@ int main()
 		return 1;
 	}
 
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Traffic Simulator");
+	sf::RenderWindow window(sf::VideoMode(1200, 600), "Traffic Simulator");
 	window.setVerticalSyncEnabled(true);
 	sf::View view = window.getDefaultView();
 	view.zoom(0.1);
