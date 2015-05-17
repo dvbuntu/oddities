@@ -79,7 +79,7 @@
 
 // factor for slowing down before stopping distance limit
 #ifndef STOP_PHI
-#define STOP_PHI (2)
+#define STOP_PHI (1.5)
 #endif
 
 

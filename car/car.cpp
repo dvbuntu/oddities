@@ -175,7 +175,12 @@ float Car::get_auto_vel(Car leader)
             headway = get_headway(leader);
             set_current_headway(headway);
             stop_d = get_stop_d(leader);
-            if (headway > STOP_PHI*stop_d)
+            // only get so close
+            if (headway < MIN_SAFE_HEADWAY)
+            {
+                new_vel = 0;
+            }
+            else if (headway > STOP_PHI*stop_d)
             {
                 new_vel = max_vel;
             }
