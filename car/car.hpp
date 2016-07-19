@@ -9,6 +9,7 @@
 
 #include <cstdlib>
 #include <cfloat>
+#include <cmath>
 #include <SFML/Graphics.hpp>
 #include <algorithm>
 #include <iostream>
