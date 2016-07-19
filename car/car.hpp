@@ -79,6 +79,7 @@
 #endif
 
 // factor for slowing down before stopping distance limit
+// This doesn't look like it does much, but it controls how quick the headway grows
 #ifndef STOP_PHI
 #define STOP_PHI (1.5)
 #endif
