@@ -9,7 +9,7 @@ In traditional traffic engineering, we model traffic flow based on human behavio
 
 This project seeks to explore the ideal algorithm for a simple convoy of self-driving cars with varying acceleration and braking capabilities.  For simplicity, these cars are only going forward in a straight line with no change in terrain nor road conditions.  While the cars in are communication as far as their current speed and capabilities, each one acts independently and does not know the others' actions in advance.  In particular, if one car comes to a sudden stop (e.g. due to an obstacle or mechanical failure), the trailing vehicles *react* to this.  Avoiding a rear-end collision becomes our core criteria for how these vehicle drive.  For human safety purposes, however, we can be slightly more loose.  By actually allowing a collision, but at sufficiently low relative velocity, we can limit human injury, but allow much smaller headways (intervehicle spacing).  Here's a [Description](car/headway.md) of phases of stopping a vehicle and necessary initial headways to avoid collision (and the math behind it).  Given this criterion (along with some factor of safety), our network of cars travel as closely together as possible, maximizing traffic flow and minimizing travel time.
 
-![Example Video](http://i.imgur.com/2DsBwO0.gif)
+![Example Video](https://cloud.githubusercontent.com/assets/3506880/16971752/5b131a16-4df4-11e6-947a-4ce03d9adf42.gif)
 
 # Code so far
 
